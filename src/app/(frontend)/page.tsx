@@ -2,8 +2,8 @@ import ToastButton from "@/components/Buttons/ToastButton";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Next.js Starter Fullstack",
-  description: "Production grade Fullstack Next.js starter template",
+  title: "Home | Public Page",
+  description: "Public Login Page",
 };
 
 const page = () => {
