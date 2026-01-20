@@ -1,12 +1,20 @@
-import { Metadata } from "next";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Home | Public Page",
-  description: "Public Login Page",
-};
+import { loginSchema } from "@/lib/zodSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 const LoginForm = () => {
-  return <section className="grid h-[85dvh] place-items-center"></section>;
+  const {} = useForm({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      rememberMe: true,
+    },
+    mode: "all",
+  });
+  return <></>;
 };
 
 export default LoginForm;
