@@ -71,10 +71,12 @@ const LoginForm = () => {
         )}
       />
       <Controller
-        name="password"
+        name="rememberMe"
         control={control}
         render={({ field, fieldState }) => (
-          <Field data-invalid={fieldState.invalid}>
+          <Field
+            data-invalid={fieldState.invalid}
+            orientation={"horizontal"}>
             <Checkbox
               id={field.name}
               name={field.name}
