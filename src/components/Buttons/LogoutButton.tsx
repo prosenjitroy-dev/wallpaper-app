@@ -4,6 +4,7 @@ const LogoutButton = () => {
   return (
     <Button
       type="button"
+      className="cursor-pointer"
       variant={"destructive"}>
       Logout
     </Button>
