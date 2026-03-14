@@ -7,12 +7,18 @@ import { Field, FieldError, FieldLabel } from "../shadcnui/field";
 import { Input } from "../shadcnui/input";
 import { Button } from "../shadcnui/button";
 import { LoaderIcon, UserRoundPlusIcon } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const RegisterForm = () => {
+  const { push } = useRouter();
+
   const {
     handleSubmit,
     control,
     formState: { isSubmitting },
+    reset,
   } = useForm({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -24,10 +30,24 @@ const RegisterForm = () => {
     mode: "all",
   });
 
-  const RegisterFormHandeler = async (registerData: registerSchemaType) => {
+  const RegisterFormHandeler = async ({
+    name,
+    email,
+    password,
+  }: registerSchemaType) => {
+    const { error } = await authClient.signUp.email({ name, email, password });
+
     await new Promise<void>((r) => setTimeout(r, 1000));
-    console.log(registerData);
+
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success("Account created successfully!");
+      reset();
+      push("/auth");
+    }
   };
+
   return (
     <form
       onSubmit={handleSubmit(RegisterFormHandeler)}

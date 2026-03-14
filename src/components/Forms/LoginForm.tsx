@@ -9,12 +9,18 @@ import { Input } from "../shadcnui/input";
 import { Checkbox } from "../shadcnui/checkbox";
 import { Button } from "../shadcnui/button";
 import { FingerprintIcon, LoaderIcon } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
+  const { push } = useRouter();
+
   const {
     handleSubmit,
     control,
     formState: { isSubmitting },
+    reset,
   } = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -25,8 +31,24 @@ const LoginForm = () => {
     mode: "all",
   });
 
-  const LoginFormHandeler = async (loginData: LoginSchematype) => {
-    console.log(loginData);
+  const LoginFormHandeler = async ({
+    email,
+    password,
+    rememberMe,
+  }: LoginSchematype) => {
+    const { error } = await authClient.signIn.email({
+      email,
+      password,
+      rememberMe,
+    });
+    await new Promise<void>((r) => setTimeout(r, 1000));
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success("Account created successfully!");
+      reset();
+      push("/studio");
+    }
   };
   return (
     <form
